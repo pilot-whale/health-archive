@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sudobang.healtharchive.mapper.CheckupReportMapper">
+    <!-- SQL定义区域 -->
+    <select id="list" resultType="com.sudobang.healtharchive.vo.CheckupReportVO">
+        select c.id, h.name as hospitalName, c.createDate
+        from checkup_report as c, hospital as h
+        where c.userId=#{userId} and c.hospitalId=h.id
+        order by c.createDate desc
+    </select>
+
+</mapper>

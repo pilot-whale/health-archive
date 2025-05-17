@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sudobang.healtharchive.mapper.CheckupDataMapper">
+
+    <select id="list" resultType="com.sudobang.healtharchive.entity.CheckupDataBean">
+        select ci.name, cr.value, ci.referenceLow, ci.referenceHigh, ci.unit
+        from checkup_indicator as ci join
+            checkup_result as cr on cr.checkupIndicatorId=ci.id
+        where
+            ci.checkupItemId=#{itemId} and
+            cr.reportId=#{reportId}
+    </select>
+
+    <select id="listVisual" resultType="com.sudobang.healtharchive.entity.CheckupEchartBean">
+        select cresult.value as checkupResult, h.name as hospitalName, creport.createDate
+        from checkup_report as creport join
+            checkup_result as cresult on cresult.reportId = creport.id join
+            hospital as h on creport.hospitalId = h.id
+        where
+            creport.userId = #{userId} and
+            cresult.checkupIndicatorId = #{indicatorId}
+        order by createDate desc
+        <if test="selectedPeriod != null">
+            limit #{selectedPeriod}
+        </if>
+    </select>
+
+</mapper>
